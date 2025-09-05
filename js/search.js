@@ -1,42 +1,42 @@
 import { showToast } from "./utils.js";
 
 export const searchForOccurences = (e, form) => {
-        e.preventDefault();
+  e.preventDefault();
 
-        document.querySelectorAll('.highlight').forEach(function(el) {
-          let parent = el.parentNode;
-          parent.replaceChild(document.createTextNode(el.textContent), el);
-          parent.normalize();
-        });
+  document.querySelectorAll('.highlight').forEach(function(el) {
+    let parent = el.parentNode;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
+  });
 
 
-        let searchKey = form.q.value.trim();
-        if (!searchKey) {
-            showToast("Enter a search query")
-            return;
-        }
+  let searchKey = form.q.value.trim();
+  if (!searchKey) {
+      showToast("Enter a search query")
+      return;
+  }
 
-        var regex = new RegExp('(' + searchKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  var regex = new RegExp('(' + searchKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
 
-        let found =false
+  let found =false
 
-        function walk(node) {
-          if (node.nodeType === 3) { // Text node
-            const match = node.nodeValue.match(regex);
-            if (match) {
-              let span = document.createElement('span');
-              span.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
-              node.replaceWith.apply(node, span.childNodes);
-              found = true
-            }
-          } 
-          else if (node.nodeType === 1 && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE' && node.tagName !== 'FORM') {
-            node.childNodes.forEach(walk);
-          }
-        }
+  function walk(node) {
+    if (node.nodeType === 3) { // Text node
+      const match = node.nodeValue.match(regex);
+      if (match) {
+        let span = document.createElement('span');
+        span.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
+        node.replaceWith.apply(node, span.childNodes);
+        found = true
+      }
+    } 
+    else if (node.nodeType === 1 && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE' && node.tagName !== 'FORM') {
+      node.childNodes.forEach(walk);
+    }
+  }
 
-     document.querySelectorAll('article').forEach(article => walk(article));
+    //easy fix for the article
+    document.querySelectorAll('article').forEach(article => walk(article));
 
-     if(!found) showToast("No match Found")
-
+    if(!found) showToast("No match Found")
 };

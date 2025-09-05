@@ -55,13 +55,56 @@ Fix application code and answer the questions:
 * (4) Add proper error handling to the code using ``try/catch`` and provide useful error messages to the users. Additionally, check the image URL availability before rendering the images in HTML. Provide placeholder images if the given URL does not exist.
 * (4) Adapt the code to use ``async/await`` instead of the ``then()``-callback hell and refactor the functions to use arrow function syntax instead of ``function()``-syntax.
 * (4) Eliminate the remaining bad coding practices that you can find. Take notes of why they are a bad practice and how you did fix it below. 
-
 > **What bad coding practices did you find? Why is it a bad practice and how did you fix it?**
-> 
-> _Present your findings here..._
->
-> ```js
-> console.log('Make use of markdown codesnippets to show and explain good/bad practices!')
-> ```
 
+- Generally all Js code under the HTML text
 
+- A lot of shared gloabl state 
+ 
+- the usage of var, even when const should have been used
+
+(Magic number)  ->
+you cold define this as constats, to have a clear understanding without a comment
+ ```js 
+    if (node.nodeType === 3) { // Text node 
+```
+
+(Mathing throug display data)  ->
+changed the matching to the state of the content display style
+```js
+ if (showHideText === 'Show comment') 
+```
+
+(logic inside simple register) ->
+refactorted simpler functions and used composition
+```js
+ form.onsubmit = function(e) {
+  ... 
+  (50 lines)
+  ...
+ }
+```
+(too muth in one if / reverse logic / guard clauses)  ->
+reduced the mental load by extractiong and composinf the logic
+```js
+  if (nameMatch && binomialMatch && imageMatch) {
+    ... 
+    (50 lines)
+    ...
+  }
+```
+
+(left a console log)  ->
+cleaned up and left the codebase in a clean state
+```js
+console.log(nameValue);
+```
+
+(unperformant image gaetting without async) -> 
+made all network calls and compute intensive funcs to asnyc and fetching all images in parallel and returning them via promise.all()
+```js
+  speciesTables.forEach(function(table) {
+    ...
+     fetchImageUrl(fileName)
+    ...
+  }

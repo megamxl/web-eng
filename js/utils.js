@@ -1,3 +1,6 @@
+/*
+  AI generated i do not write my own toast ...
+*/
 const showToast = (message, duration = 3000) => {
   const toast = document.createElement('div');
   toast.className = 'toast';
