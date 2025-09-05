@@ -248,3 +248,27 @@ audio {
 .comment-container li p:nth-child(2) {
   flex: 5;
 }
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  min-width: 250px;
+  margin-bottom: 10px;
+  padding: 12px 20px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #e74c3c; /* red for error */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}

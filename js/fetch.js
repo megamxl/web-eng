@@ -1,7 +1,7 @@
-var baseUrl = "https://en.wikipedia.org/w/api.php";
-var title = "List_of_ursids";
+const baseUrl = "https://en.wikipedia.org/w/api.php";
+const title = "List_of_ursids";
 
-var params = {
+const params = {
   action: "parse",
   page: title,
   prop: "wikitext",
@@ -10,9 +10,9 @@ var params = {
   origin: "*"
 };
 
-const placeholderImage = "https://via.placeholder.com/200x150?text=No+Image";
+const placeholderImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
-async function fetchImageUrl(fileName) {
+const fetchImageUrl = async (fileName) => {
   if (!fileName) return placeholderImage;
 
   var imageParams = {
@@ -30,6 +30,10 @@ async function fetchImageUrl(fileName) {
     const pages = data.query.pages;
     const page = Object.values(pages)[0];
     if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
+      const img = await fetch(page.imageinfo[0].url)
+      if(img.status !== 200){
+        return placeholderImage
+      }
       return page.imageinfo[0].url;
     }
     return placeholderImage;
@@ -38,50 +42,79 @@ async function fetchImageUrl(fileName) {
   }
 }
 
-async function extractBears(wikitext) {
+const extractBearsFromWkiText = (wikitext) => {
   const speciesTables = wikitext.split('{{Species table/end}}');
   const bears = [];
 
   for (const table of speciesTables) {
-    const rows = table.split('{{Species table/row').slice(1); // skip the first non-row part
+    const rows = table.split('{{Species table/row').slice(1);
 
-    for (const row of rows) {
+    rows.forEach(row => {
       const nameMatch = row.match(/\|name=\[\[(.*?)\]\]/);
       const binomialMatch = row.match(/\|binomial=(.*?)\n/);
       const imageMatch = row.match(/\|image=(.*?)\n/);
       const rangeMatch = row.match(/\|range=([^\|]+)/);
 
       if (nameMatch && binomialMatch) {
-        const fileName = imageMatch ? imageMatch[1].trim().replace('File:', '') : null;
-        const imageUrl = await fetchImageUrl(fileName);
-
         bears.push({
-          name: nameMatch[1],
-          binomial: binomialMatch[1],
-          image: imageUrl,
-          range: rangeMatch ? rangeMatch[1].trim() : "Unknown"
+          name: nameMatch[1].trim(),
+          binomial: binomialMatch[1].trim(),
+          imageFile: imageMatch ? imageMatch[1].trim().replace('File:', '') : null,
+          range: rangeMatch ? rangeMatch[1].trim() : 'Unknown'
         });
       }
-    }
+    });
   }
+  return bears;
+};
 
-  // Render bears in order
-  const moreBears = document.querySelector('.more_bears');
-  moreBears.innerHTML = "";
-  bears.forEach(bear => {
-    const html = `<div class="bear">
-      <img src="${bear.image}" alt="Image of ${bear.name}" style="width:200px; height:auto;">
-      <p><b>${bear.name}</b> (${bear.binomial})</p>
-      <p>Range: ${bear.range}</p>
-    </div>`;
-    moreBears.innerHTML += html;
+const removeDuplicates = (bears) => {
+  const seen = new Set();
+  return bears.filter(bear => {
+    if (seen.has(bear.binomial)) {
+        return false;
+    }
+    seen.add(bear.binomial);
+    return true;
   });
+};
+
+const fetchImagesForBears = async (bears) => {
+  const promises = bears.map(async bear => {
+    const imageUrl = await fetchImageUrl(bear.imageFile);
+    return { ...bear, image: imageUrl };
+  });
+  //to keep the order and return when all done 
+  return await Promise.all(promises);
+};
+
+const extractBears = async (wikitext) => {
+  const basicBears = extractBearsFromWkiText(wikitext);
+  const uniqueBears = removeDuplicates(basicBears);
+  const bearsWithImages = await fetchImagesForBears(uniqueBears);
+  return bearsWithImages;
+};
+
+const render = (bears) => {
+    const moreBears = document.querySelector('.more_bears');
+    moreBears.innerHTML = "";
+
+    bears.forEach(bear => {
+        moreBears.innerHTML += `
+            <div class="bear">
+                <img src="${bear.image}" alt="Image of ${bear.name}" style="width:200px; height:auto;">
+                <p><b>${bear.name}</b> (${bear.binomial})</p>
+                <p>Range: ${bear.range}</p>
+            </div>`;
+    });
 }
 
-async function fetchBearImages() {
+
+const fetchandRenderBearImages = async () => {
   const res = await fetch(baseUrl + "?" + new URLSearchParams(params).toString());
   const data = await res.json();
-  await extractBears(data.parse.wikitext['*']);
+  const bears = await extractBears(data.parse.wikitext['*']);
+  render(bears)
 }
 
-export { fetchBearImages };
+export { fetchandRenderBearImages as fetchBearImages };

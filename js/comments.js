@@ -1,4 +1,7 @@
-function commentForm(e) {
+import { showToast } from "./utils.js";
+
+
+const commentForm = (e) => {
     // Comment form stuff
     e.preventDefault();
 
@@ -9,8 +12,8 @@ function commentForm(e) {
     var nameValue = nameField.value;
     var commentValue = commentField.value;
 
-    //TODO null
-    if(nameValue.trim() === '' || commentPara.trim() === ''){
+    if(nameValue === null  || commentPara === null || nameValue.trim() === '' ||  commentValue.trim() === ''){
+        showToast("Name and Comment must be filled")
         return 
     }
 
@@ -30,22 +33,21 @@ function commentForm(e) {
     
 }
 
-function toggleCommentButton(){
+const toggleCommentButton = () => {
     var showHideBtn = document.querySelector('.show-hide');
     var commentWrapper = document.querySelector('.comment-wrapper');
     commentWrapper.style.display = 'none';
 
-
     showHideBtn.onclick = function() {
-    var showHideText = showHideBtn.textContent;
+        var showHideText = showHideBtn.textContent;
  
-    if (commentWrapper.style.display === 'none') { 
-        showHideBtn.textContent = 'Hide comments';
-        commentWrapper.style.display = 'block';
-    } else {
-        showHideBtn.textContent = 'Show comments';
-        commentWrapper.style.display = 'none';
-    }
+        if (commentWrapper.style.display === 'none') { 
+            showHideBtn.textContent = 'Hide comments';
+            commentWrapper.style.display = 'block';
+        } else {
+            showHideBtn.textContent = 'Show comments';
+            commentWrapper.style.display = 'none';
+        }
     };
 
 }

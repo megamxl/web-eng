@@ -37,6 +37,7 @@
     </div>
 
     <main>
+      <div id="toast-container"></div>
       <article>
         <font size="6">The trouble with Bears</font>
         <br><br>
@@ -158,26 +159,6 @@
       END:
         Beautiful HTML markup
     -->
-    <script type="module">
-      import { searchForOccurences } from './js/search.js';
-      import {commentForm, toggleCommentButton} from './js/comments.js'
-      import {fetchBearImages} from './js/fetch.js'
-
-      fetchBearImages()
-
-      //SEARCH
-      document.querySelector('.search').addEventListener('submit', function(e){
-        searchForOccurences(e, this);
-      });
-
-      // Show/hide comments toggle
-      toggleCommentButton();
-
-      //COMMENT-form
-      document.querySelector('.comment-form').onsubmit = function (e) {
-        commentForm(e);
-      };
-    </script>
-
+    <script src="/js/main.js" type="module"></script>
   </body>
 </html>

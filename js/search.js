@@ -1,25 +1,33 @@
-export function searchForOccurences(e, form) {
+import { showToast } from "./utils.js";
+
+export const searchForOccurences = (e, form) => {
         e.preventDefault();
 
         document.querySelectorAll('.highlight').forEach(function(el) {
-          var parent = el.parentNode;
+          let parent = el.parentNode;
           parent.replaceChild(document.createTextNode(el.textContent), el);
           parent.normalize();
         });
 
 
-        var searchKey = form.q.value.trim();
-        if (!searchKey) return;
+        let searchKey = form.q.value.trim();
+        if (!searchKey) {
+            showToast("Enter a search query")
+            return;
+        }
 
         var regex = new RegExp('(' + searchKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
 
+        let found =false
+
         function walk(node) {
           if (node.nodeType === 3) { // Text node
-            var match = node.nodeValue.match(regex);
+            const match = node.nodeValue.match(regex);
             if (match) {
-              var span = document.createElement('span');
+              let span = document.createElement('span');
               span.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
               node.replaceWith.apply(node, span.childNodes);
+              found = true
             }
           } 
           else if (node.nodeType === 1 && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE' && node.tagName !== 'FORM') {
@@ -28,4 +36,7 @@ export function searchForOccurences(e, form) {
         }
 
      document.querySelectorAll('article').forEach(article => walk(article));
+
+     if(!found) showToast("No match Found")
+
 };
