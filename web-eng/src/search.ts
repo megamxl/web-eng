@@ -1,14 +1,18 @@
-import { showToast } from "./utils.js";
+import { showToast } from "./utils.ts";
+
 
 const textNodeType = 3
 
-export const searchForOccurences = (e, form) => {
+export const searchForOccurences = (e : Event, form :any ) => {
   e.preventDefault();
 
   document.querySelectorAll('.highlight').forEach(function(el) {
     let parent = el.parentNode;
-    parent.replaceChild(document.createTextNode(el.textContent), el);
-    parent.normalize();
+
+    if( parent != null){
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize();   
+    }
   });
 
 
@@ -22,15 +26,19 @@ export const searchForOccurences = (e, form) => {
 
   let found =false
 
-  function walk(node) {
+  function walk(node : any) {
     if (node.nodeType === textNodeType) { // Text node
-      const match = node.nodeValue.match(regex);
-      if (match) {
-        let span = document.createElement('span');
-        span.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
-        node.replaceWith.apply(node, span.childNodes);
-        found = true
-      }
+
+        if(node.nodeValue !== null)
+        {
+            const match = node.nodeValue.match(regex);
+            if (match) {
+                let span = document.createElement('span');
+                span.innerHTML = node.nodeValue.replace(regex, '<mark class="highlight">$1</mark>');
+                node.replaceWith(...Array.from(span.childNodes));
+                found = true
+            }
+        }
     } 
     else if (node.nodeType === 1 && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE' && node.tagName !== 'FORM') {
       node.childNodes.forEach(walk);

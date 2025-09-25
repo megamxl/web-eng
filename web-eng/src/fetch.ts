@@ -12,7 +12,7 @@ const params = {
 
 const placeholderImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
 
-const fetchImageUrl = async (fileName) => {
+const fetchImageUrl = async (fileName : string) => {
   if (!fileName) return placeholderImage;
 
   const imageParams = {
@@ -28,7 +28,7 @@ const fetchImageUrl = async (fileName) => {
     const res = await fetch(baseUrl + "?" + new URLSearchParams(imageParams).toString());
     const data = await res.json();
     const pages = data.query.pages;
-    const page = Object.values(pages)[0];
+    const page : any = Object.values(pages)[0];
     if (page.imageinfo && page.imageinfo[0] && page.imageinfo[0].url) {
       const img = await fetch(page.imageinfo[0].url)
       if(img.status !== 200){
@@ -42,9 +42,9 @@ const fetchImageUrl = async (fileName) => {
   }
 }
 
-const extractBearsFromWkiText = (wikitext) => {
+const extractBearsFromWkiText = (wikitext :string) => {
   const speciesTables = wikitext.split('{{Species table/end}}');
-  const bears = [];
+  const bears :any = [];
 
   for (const table of speciesTables) {
     const rows = table.split('{{Species table/row').slice(1);
@@ -68,9 +68,10 @@ const extractBearsFromWkiText = (wikitext) => {
   return bears;
 };
 
-const removeDuplicates = (bears) => {
+const removeDuplicates = (bears :any) => {
   const seen = new Set();
-  return bears.filter(bear => {
+  //@ts-ignore
+  return bears.filter(bear  => {
     if (seen.has(bear.binomial)) {
         return false;
     }
@@ -79,7 +80,8 @@ const removeDuplicates = (bears) => {
   });
 };
 
-const fetchImagesForBears = async (bears) => {
+const fetchImagesForBears = async (bears :any) => {
+    //@ts-ignore
   const promises = bears.map(async bear => {
     const imageUrl = await fetchImageUrl(bear.imageFile);
     return { ...bear, image: imageUrl };
@@ -88,18 +90,23 @@ const fetchImagesForBears = async (bears) => {
   return await Promise.all(promises);
 };
 
-const extractBears = async (wikitext) => {
+const extractBears = async (wikitext: string) => {
   const basicBears = extractBearsFromWkiText(wikitext);
   const uniqueBears = removeDuplicates(basicBears);
   const bearsWithImages = await fetchImagesForBears(uniqueBears);
   return bearsWithImages;
 };
 
-const render = (bears) => {
+const render = (bears : any) => {
     const moreBears = document.querySelector('.more_bears');
+    //@ts-ignore
     moreBears.innerHTML = "";
 
+        //@ts-ignore
+
     bears.forEach(bear => {
+            //@ts-ignore
+
         moreBears.innerHTML += `
             <div class="bear">
                 <img src="${bear.image}" alt="Image of ${bear.name}" style="width:200px; height:auto;">
@@ -111,6 +118,8 @@ const render = (bears) => {
 
 
 const fetchandRenderBearImages = async () => {
+        //@ts-ignore
+
   const res = await fetch(baseUrl + "?" + new URLSearchParams(params).toString());
   const data = await res.json();
   const bears = await extractBears(data.parse.wikitext['*']);
