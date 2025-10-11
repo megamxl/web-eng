@@ -2,14 +2,14 @@ import { showToast } from './utils.ts';
 
 const textNodeType = 3;
 
-export const searchForOccurences = (e: Event, form: HTMLFormElement ) => {
+export const searchForOccurences = (e: Event, form: HTMLFormElement) => {
   e.preventDefault();
 
   document.querySelectorAll('.highlight').forEach(function (el) {
     const parent = el.parentNode;
 
     if (parent != null) {
-      parent.replaceChild(document.createTextNode(el.textContent ?? ''), el);      
+      parent.replaceChild(document.createTextNode(el.textContent ?? ''), el);
       parent.normalize();
     }
   });
@@ -49,7 +49,8 @@ export const searchForOccurences = (e: Event, form: HTMLFormElement ) => {
       node.tagName !== 'STYLE' &&
       node.tagName !== 'FORM'
     ) {
-      (node.childNodes as NodeListOf<Element>).forEach(walk);    }
+      (node.childNodes as NodeListOf<Element>).forEach(walk);
+    }
   }
 
   //easy fix for the article
