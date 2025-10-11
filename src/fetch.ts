@@ -38,7 +38,7 @@ interface bear {
   range: string;
 }
 
-const fetchImageUrl = async (fileName: any) => {
+const fetchImageUrl = async (fileName: string) => {
   if (!fileName) return placeholderImage;
 
   const imageParams = {
