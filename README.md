@@ -39,57 +39,152 @@ The project introduces a lot of code smells for you to tackle.
 - No JS Frameworks allowed to solve the playgrounds 1-4 (e.g. Vue.js, Angular, React, Svelte,...) - don't panic we will come to that!
 - No CSS Libraries allowed (e.g. Bootstrap, Material, Tailwind, ...)
 
-## 1. JS Playground
 
-## 2. Dependency- and Build Management Playground
-
-Build the application with `npm` and a build and a dependency management tool of your choice (e.g. [Vite](https://vitejs.dev/), [Webpack](https://webpack.js.org/), or others). Additionally, refactor the comments section to be a web component using shadow dom and templates.
+## 3.	Accessibility and Web Component Playground
+You might have noticed that the base project has a number of accessibility issues - your task is to explore the existing site and fix them.
+Use the tools presented in our accessibility workshop to test the accessibility of your app and write a summary of your reports below.
+Additionally, refactor your project by encapsulating the comments section into a web component.
 
 ### Tasks
+* Accessibility Checks:
+  * (2) **Color**: Test the current color contrast (text/background), report the results of the test, and then fix them by changing the assigned colors.
+  * (2) **Semantic HTML**: Report on what happens when you try to navigate the page using a screen reader. Fix those navigation issues.
+  * (2) **Audio**: The ``<audio>`` player isn't accessible to hearing impaired people — can you add some kind of accessible alternative for these users?
+  * (2) **Forms**: 
+    * The ``<input>`` element in the search form at the top could do with a label, but we don't want to add a visible text label that would potentially spoil the design and isn't really needed by sighted users. Fix this issue by adding a label that is only accessible to screen readers.
+    * The two ``<input>`` elements in the comment form have visible text labels, but they are not unambiguously associated with their labels — how do you achieve this? Note that you'll need to update some of the CSS rule as well.
+  * (2) **Comment Section**: The show/hide comment control button is not currently keyboard-accessible. Can you make it keyboard accessible, both in terms of focusing it using the tab key, and activating it using the return key?
+  * (4) **The table**: The data table is not currently very accessible — it is hard for screen reader users to associate data rows and columns together, and the table also has no kind of summary to make it clear what it shows. Can you add some features to your HTML to fix this problem?
 
-- (1) Integrate `npm` and a build management tool into your project.
-- (5) Configure your project to use Typescript as your primary development language and adapt the code and file extensions respectively.
-- (3) Use ESLint and Prettier inside your project - rulesets can be found below.
-- (2) Keep your builds clear and add dependencies to the right build.
-- (2) Define the following tasks within `npm scripts`:
-  - `dev`: starts the development server.
-  - `build`: runs the typescript compiler and bundles your application - bundling depends on your chosen build tool (e.g. Vite, Webpack) but typically bundles multiple files into one, applies optimizations like minification and obfuscation and outputs final results to a `dist` or `build` directory.
-  - `lint`: runs ESLint on all `.js` and `.ts` files in your projects `/src` directory.
-  - `lint:fix`: runs and also fixes all issues found by ESLint.
-  - `format`: formats all `.js` and `.ts` files in your projects `/src` directory.
-  - `format:check`: checks if the files in the `/src` directory are formatted according to Prettier's rules.
-- (2) Configure a pre-commit hook that lints and formats your code using [husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged). A tutorial can be found [here](https://dev.to/shashwatnautiyal/complete-guide-to-eslint-prettier-husky-and-lint-staged-fh9).
-- Configure **2 Workflows** using GitHub Actions, one for development and one for deployment:
-  - (2) Development Workflow should at least lint (optionally test) your code when developers push to a branch named `development`.
-  - (3) Deployment Workflow is triggered when developers push into `production` branch. It should at least lint and build your source code. Afterwards the build artifacts of your application should be automatically deployed to Github Pages (or another hosting provider of your choice).
+* (6) Create a web component for the "Add comment" section. Use te shadow DOM and <code>template</code> syntax to encapsulate all related styles inside the component. 
 
-> [Deploy](https://megamxl.github.io/web-eng/)
 
-**ESLint Configurations**
 
-Use ESLint configs [standard-with-typescript](https://www.npmjs.com/package/eslint-config-standard-with-typescript) and [TypeScript ESLint Plugin](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin).
-Your `.eslintrc` file should have the following extensions:
+The first task was to add the WAVE extension and open the wbsite. 
 
-```.eslintrc.yml
-...
-extends:
-  - standard-with-typescript
-  - plugin:@typescript-eslint/recommended
-  - plugin:prettier/recommended
-  - prettier
-...
+### Task 1
+The Contrast area had a lot of errors 42 in generla but a light black on green also doen't seem like the best Idea
+![Contrast Errors](read-me-img/contrast-error.png)
+
+To fix this a simple fix to the color to soemthing with good contrast and then we accive 0 errors
+
+```css
+font[size='7'],
+font[size='6'],
+font[size='5'] {
+  font-family: 'Sonsie One', cursive;
+  color: #000;
+}
+
+font[size='7'] {
+  font-size: 4rem;
+  text-align: center;
+  color: rgb(19, 10, 10);
+  text-shadow: 2px 2px 10px black;
+}
+
+
+div[class='nav'],
+article,
+footer,
+.secondary {
+  background-color: rgb(167, 195, 167);
+}
+
 ```
 
-**Prettier Configurations**
+![Contrast-No_Errors](read-me-img/no-contrast.png)
 
-Apply the following ruleset for Prettier:
 
-```.prettierrc
-{
-  "semi": true,
-  "singleQuote": true,
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "printWidth": 80
-}
+### Task 2
+
+I can't navigate to the show comments section. This means there is something wrong with the atribute used for the button
+
+```html 
+old:
+<div class="show-hide">Show comments</div>
+
+new: 
+<button id="show-comments" class="show-hide">Show comments</button>
+```
+
+
+### Task 3
+
+//TODO
+Todo mabey fix that the ogg fle is better used 
+
+```html
+<audio controls>
+  <source src="media/bear.mp3" type="audio/mp3" />
+  <source src="media/bear.ogg" type="audio/ogg" />
+  <p>It looks like your browser doesn't support HTML5 audio players.</p>
+</audio>
+
+<!-- Accessible alternative for hearing-impaired users -->
+<div class="audio-transcript" aria-label="Audio transcript">
+  <p><strong>Transcript:</strong></p>
+  <p>
+    This audio contains the sounds of bears during their mating rituals. 
+    You’ll hear deep growls, short grunts, and occasional roars.
+  </p>
+</div>
+```
+
+### Task 4
+
+To fix this, we'll replace the text nodes with the proper <label> element and use the for and id attributes to create the required unambiguous association. Since the text labels are already visible, no special screen-reader-only CSS is needed here.
+
+```html
+old:
+ <form class="comment-form">
+              <div class="flex-pair">
+                Your name:
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div class="flex-pair">
+                Your comment:
+                <input
+                  type="text"
+                  name="comment"
+                  id="comment"
+                  placeholder="Enter your comment"
+                />
+              </div>
+              <div>
+                <input type="submit" value="Submit comment" />
+              </div>
+            </form> 
+
+new:
+          <form class="comment-form">
+            <div class="flex-pair">
+              <label for="name">Your name:</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter your name"
+              />
+            </div>
+            <div class="flex-pair">
+              <label for="comment">Your comment:</label>
+              <input
+                type="text"
+                name="comment"
+                id="comment"
+                placeholder="Enter your comment"
+              />
+            </div>
+            <div>
+              <input type="submit" value="Submit comment" />
+            </div>
+          </form>
+
 ```
