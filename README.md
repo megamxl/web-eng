@@ -110,8 +110,6 @@ new:
 
 
 ### Task 3
-
-//TODO
 Todo mabey fix that the ogg fle is better used 
 
 ```html
@@ -125,8 +123,7 @@ Todo mabey fix that the ogg fle is better used
 <div class="audio-transcript" aria-label="Audio transcript">
   <p><strong>Transcript:</strong></p>
   <p>
-    This audio contains the sounds of bears during their mating rituals. 
-    You’ll hear deep growls, short grunts, and occasional roars.
+    This isn't really an audio fact file about bears, but it is an audio file that you can transcribe.
   </p>
 </div>
 ```
