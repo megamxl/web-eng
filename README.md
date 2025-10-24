@@ -58,8 +58,6 @@ Additionally, refactor your project by encapsulating the comments section into a
 
 * (6) Create a web component for the "Add comment" section. Use te shadow DOM and <code>template</code> syntax to encapsulate all related styles inside the component. 
 
-
-
 The first task was to add the WAVE extension and open the wbsite. 
 
 ### Task 1

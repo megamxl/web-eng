@@ -143,7 +143,7 @@ const render = (bears: bear[]) => {
 
   bears.forEach((bear) => {
     moreBears.innerHTML += `
-            <div class="bear">
+            <div class="bear"  tabindex="0">
                 <img src="${bear.imageFile}" alt="Image of ${bear.name}" style="width:200px; height:auto;">
                 <p><b>${bear.name}</b> (${bear.binomial})</p>
                 <p>Range: ${bear.range}</p>
