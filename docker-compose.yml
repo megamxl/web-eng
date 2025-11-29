@@ -1,0 +1,6 @@
+services:
+  frontend:
+    image: example/webapp
+    build: .
+    ports:
+      - "8080:8080"
