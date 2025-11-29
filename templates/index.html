@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Wildlife Website - Buggy Starter</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" href="static/css/style.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/@imacrayon/alpine-ajax@0.12.6/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<body>
+
+<div class="header" aria-label="Banner" tabindex="0">
+    <h1>Welcome to our wildlife website</h1>
+</div>
+
+<div class="nav" aria-label="navigation">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Our team</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Blog</a></li>
+    </ul>
+
+    <form class="search" aria-label="search on the site">
+        <input type="search" name="q" id="search-input" placeholder="Search query" aria-label="search keyword" />
+        <input type="submit" value="Go!" aria-label="submit search" />
+    </form>
+</div>
+
+<main aria-label="Main article about bears">
+    <div id="toast-container" aria-label="Notification messages"></div>
+
+    <article aria-labelledby="bear-article-title">
+        <h2 id="bear-article-title" tabindex="0">The trouble with Bears</h2>
+        <br /><br />
+        <div tabindex="0">
+            By Evan Wild
+        </div>
+        <br /><br />
+
+        <h3 id="bear-types-heading" tabindex="0" >Types of bear</h3>
+        <br /><br />
+
+        <table role="table" aria-labelledby="bear-types-heading">
+            <thead>
+            <tr>
+                <th scope="col" tabindex="0">Bear Type</th>
+                <th scope="col" tabindex="0">Coat</th>
+                <th scope="col" tabindex="0">Adult size</th>
+                <th scope="col" tabindex="0">Habitat</th>
+                <th scope="col" tabindex="0">Lifespan</th>
+                <th scope="col" tabindex="0">Diet</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" tabindex="0">Wild</th>
+                <td tabindex="0">Brown or black</td>
+                <td tabindex="0">1.4 to 2.8 meters</td>
+                <td tabindex="0">Woods and forests</td>
+                <td tabindex="0">25 to 28 years</td>
+                <td tabindex="0">Fish, meat, plants</td>
+            </tr>
+            <tr>
+                <th scope="row" tabindex="0">Urban</th>
+                <td   tabindex="0">North Face</td>
+                <td tabindex="0">18 to 22</td>
+                <td tabindex="0">Condos and coffee shops</td>
+                <td tabindex="0">20 to 32 years</td>
+                <td tabindex="0">Starbucks, sushi</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 id="habitat-heading" >Habitats and Eating habits</h3>
+        <br /><br />
+            Wild bears eat a variety...
+            <br /><br />
+            <img src="static/media/wild-bear.jpg" alt="Wild bear in forest" />
+            <br /><br />
+
+            Urban bears...
+
+            <br /><br />
+            <img src="static/media/urban-bear.jpg" alt="Urban bear near buildings" />
+            <br /><br />
+
+            <h3 id="mating-heading" >Mating rituals</h3>
+            <br /><br />
+            Bears are romantic creatures by nature...
+            <br /><br />
+
+            <audio controls aria-labelledby="bear-audio-label">
+                <span id="bear-audio-label" class="sr-only">Bear audio description</span>
+                <source src="static/media/bear.mp3" type="audio/mp3" />
+                <source src="static/media/bear.ogg" type="audio/ogg" />
+                <p>
+                    Download <a href="static/media/bear.ogg">MP3</a> or
+                    <a href="static/media/bear.ogg" download="static/media/bear.ogg">OGG</a> audio.
+                </p>
+            </audio>
+
+            <div class="audio-transcript" aria-label="Audio transcript">
+                <p><strong>Transcript:</strong></p>
+                <p>This isn't really an audio fact file about bears...</p>
+            </div>
+
+            <aside aria-labelledby="about-author-heading">
+                <h3 id="about-author-heading">About the author</h3>
+                <br /><br />
+                Evan Wild is an unemployed plumber from Doncaster...
+            </aside>
+
+            <section class="comments"  id="comments" x-init="$ajax('/show-comments?state=false')"></section>
+
+            <section id="more-bears-section" x-init="$ajax('/more-bears')" class="more_bears" aria-labelledby="more-bears-heading"></section>
+    </article>
+
+    <div class="secondary" aria-labelledby="related-heading">
+        <h2 id="related-heading">Related</h2>
+        <ul>
+            <li><a href="#">The trouble with Bees</a></li>
+            <li><a href="#">The trouble with Otters</a></li>
+            <li><a href="#">The trouble with Penguins</a></li>
+            <li><a href="#">The trouble with Octopi</a></li>
+            <li><a href="#">The trouble with Lemurs</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer aria-label="Site footer">
+    <p>©Copyright 2050 by nobody. All rights reversed.</p>
+</footer>
+
+</body>
+<script src="static/js/search.js" type="module"></script>
+</html>

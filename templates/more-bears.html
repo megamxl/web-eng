@@ -1,0 +1,10 @@
+<section id="more-bears-section" class="more_bears" aria-labelledby="more-bears-heading">
+    <h3 id="more-bears-heading">More Bears</h3>
+{{range .bears}}
+<div class="bear"  tabindex="0">
+    <img src="data:image/png;base64, {{.ImageBase64}}" alt="Image of {{ .Name}}" style="width:200px; height:auto;">
+    <p><b>{{ .Name}} </b> {{ .Binomial}} </p>
+    <p>Range: {{ .Range}} </p>
+</div>
+{{end}}
+</section>

@@ -1,0 +1,47 @@
+<section id="comments" class="comments" x-target>
+
+    <form id="comments-form" x-target="comments"  method="get" action="/show-comments">
+        <input type="hidden" name="state" value="false">
+        <button class="show-hide" value="1" x-trigger>Hide comments</button>
+    </form>
+
+
+    <div class="comment-wrapper">
+        <h2>Add comment</h2>
+        <form class="comment-form" id="comment-form" x-target="comments" method="post" action="/add-comment">
+            <div class="flex-pair">
+                <label for="name">Your name:</label>
+                <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Enter your name"
+                        required
+                />
+            </div>
+            <div class="flex-pair">
+                <label for="comment">Your comment:</label>
+                <input
+                        type="text"
+                        name="comment"
+                        id="comment"
+                        placeholder="Enter your comment"
+                        required
+                />
+            </div>
+            <div>
+                <button>Submit comment</button>
+            </div>
+        </form>
+
+        <h2>Comments</h2>
+        <ul id="comment-container" class="comment-container">
+            {{range .comments}}
+            <li>
+                <p><strong>{{.Name}}</strong></p>
+                <p>{{.Content}}</p>
+            </li>
+            {{end}}
+        </ul>
+    </div>
+</section>
