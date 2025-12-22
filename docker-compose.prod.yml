@@ -1,0 +1,29 @@
+services:
+  haproxy:
+    image: haproxy:2.8-alpine
+    ports:
+      - "80:80"
+      - "8404:8404" 
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    image: megamxl/frontend:latest
+    build:
+      context: ./frontend
+    expose:
+      - "8080"
+    environment:
+      - BACKEND_URL=http://haproxy:80/api/more-bears-rust
+    restart: always
+
+  backend:
+    image: megamxl/backend:latest
+    build:
+      context: ./backend
+    expose:
+      - "3000"
+    restart: always

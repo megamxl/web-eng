@@ -1,11 +1,12 @@
 use std::vec;
 use std::collections::HashSet;
-use actix_web::{get, web, App, HttpServer, HttpResponse,  Responder};
+use actix_web::{get, http, web, App, HttpServer, HttpRequest ,HttpResponse,  Responder};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use reqwest::{self, Client};
 use regex::Regex;
 use lazy_static::lazy_static;
+use actix_cors::Cors;
 
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
@@ -271,10 +272,21 @@ pub async fn fetch_images_for_bears(
 async fn main() -> std::io::Result<()> {
     println!("🐻 Server running at http://0.0.0.0:3000");
     HttpServer::new(|| {
-        App::new().service(more_bears)
+    let cors = Cors::default()
+            .allowed_origin("http://0.0.0.0:8080")
+            .allowed_methods(vec!["GET"])
+            .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+            .allowed_header(http::header::CONTENT_TYPE)
+            .max_age(3600);
+
+        App::new()
+            .wrap(cors)
+            .service(more_bears)
     })
     .bind(("0.0.0.0", 3000))?
     .run()
-    .await
+    .await;
+
+    Ok(())
 }
 
